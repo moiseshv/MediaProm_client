@@ -1,0 +1,22 @@
+{
+    "name": "MediaProm Client",
+    "description": "Fork & Join MediaProm Client",
+    "logo": "https://avatars0.githubusercontent.com/u/1294580?v=3&s=200",
+    "keywords": ["node", "angular", "Fork & Join", "Media"],
+    "env": {
+
+        "APP_ID": {
+            "description": "A unique identifier for your app.",
+            "value": "MEDIA_PROM"
+        },
+        "MASTER_KEY": {
+            "description": "A key that overrides all permissions. Keep this secret.",
+            "value": "MEDIA_PROM_MASTER_KEY"
+        },
+        "MEDIA_SERVER_URL": {
+            "description": "URL to connect to your Media Prom Server)",
+            "value": "138.197.99.140:1337/parse"
+        }
+
+    }
+}
