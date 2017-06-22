@@ -61,7 +61,7 @@ export class Register {
     var userdata = await this._regservice.register(newuser);
 
     if (userdata == undefined) {
-      var message = "Can not register in this moment. Please try again later.";
+      var message = "Can not login in this moment. Please try again later.";
       alert(message);
     }
     else {

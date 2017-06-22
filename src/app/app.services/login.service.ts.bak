@@ -30,7 +30,6 @@ export class LoginService {
   public async resetPassword(email: string) {
     console.log("Reset Pass Service...");
     var serverurl = this.serverUrl + 'requestPasswordReset';
-    
     var req_response = await fetch(serverurl, {
       method: "POST",
       body: JSON.stringify({ 'email': email }),
@@ -49,7 +48,7 @@ export class LoginService {
 
 
   public async logout(tokenSession: string) {
-    console.log("Logout Service...  " + tokenSession );
+    console.log("Logout Service...");
     var serverurl = this.serverUrl + 'logout';
     var req_response = await fetch(serverurl, {
       method: "POST",

@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { LoginService } from '../../app.services/login.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {GlobalState} from '../../../app/global.state';
 import { DefaultModal } from './../ui/components/modals/default-modal/default-modal.component';
+import { Router, ActivatedRoute } from '@angular/router';
+
 
 
 @Component({
@@ -19,7 +22,9 @@ export class Login {
   public email: AbstractControl;
   public submitted: boolean = false;
 
-  constructor(fb: FormBuilder, private _loginservice: LoginService, private modalService: NgbModal) {
+  public currentUser: Object;
+
+  constructor(private router: Router, private _state:GlobalState, fb: FormBuilder, private _loginservice: LoginService, private modalService: NgbModal) {
     this.form = fb.group({
       'username': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
       'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
@@ -27,6 +32,12 @@ export class Login {
 
     this.username = this.form.controls['username'];
     this.password = this.form.controls['password'];
+
+    this._state.subscribe('user.current', (user) => {
+      this.currentUser = user;
+    });
+
+
   }
 
   public onSubmit(values: Object): void {
@@ -40,7 +51,13 @@ export class Login {
   }
 
   private async login(values: Object) {
-    var userdata = await this._loginservice.login(values["username"], values["password"]);
+    try {
+      var userdata = await this._loginservice.login(values["username"], values["password"]);
+    } catch (error) {
+      console.log(error);
+      this.childModalShow(message, 'Error!! Failed to connect with server. Please Try again later.');
+    }
+    
 
     if (userdata == undefined) {
       var message = "Can not login in this moment. Please try again later.";
@@ -57,6 +74,11 @@ export class Login {
         //Salvar el usuario actual 
         message = "Login Process OK!!!";
         console.log(message);
+        //this.currentUser = userdata;
+        this._state.notifyDataChanged('user.current', userdata);
+        this._state.notifyDataChanged('session.token', userdata['sessionToken']);
+        this._state.notifyDataChanged('user.isLogged', true);
+        this.router.navigate(['/']);
         this.childModalShow(message, 'Notification');
       }
     }
