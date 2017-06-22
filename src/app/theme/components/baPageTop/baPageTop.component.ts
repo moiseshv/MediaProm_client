@@ -16,6 +16,7 @@ export class BaPageTop {
   public isUserLogged: boolean = false;
   public sessionToken: string = "";
   public username: string = "";
+  public avatarfilename: string = "sign_in_avatar";
   public userActionName = "Sign In";
   private _user: Object;
 
@@ -40,6 +41,11 @@ export class BaPageTop {
       if (user != undefined) {
         this._user = user;
         this.username = user['name'];
+        this.avatarfilename = user['name'];
+        if(!this.avatarfilename){
+         // this.avatarfilename = 'sign_in_avatar';
+
+          }
       }
     });
 
@@ -99,12 +105,12 @@ public resetPassword() {
         alert(message);
       }
       else {
-        //Salvar el usuario actual 
+        //Salvar el usuario actual  
         message = "Logout Process OK!!!";
         this.isUserLogged = false;
         this._state.notifyDataChanged('user.isLogged', this.isUserLogged);
         this.username = "";
-        alert(message);
+        this.avatarfilename = 'sign_in_avatar';
         console.log(message);
       }
     }

@@ -31,7 +31,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'register', loadChildren: './register/register.module#RegisterModule' },
       { path: 'login', loadChildren: './login/login.module#LoginModule' },
-     // { path: 'resetpassword', loadChildren: './resetpassword/resetpassword.module#ResetPasswordModule' },
+      { path: 'resetpassword', loadChildren: './resetpass/resetpass.module#ResetPassModule' },
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
       { path: 'editors', loadChildren: './editors/editors.module#EditorsModule' },
       { path: 'components', loadChildren: './components/components.module#ComponentsModule' },

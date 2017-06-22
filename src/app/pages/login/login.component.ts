@@ -79,7 +79,7 @@ export class Login {
         this._state.notifyDataChanged('session.token', userdata['sessionToken']);
         this._state.notifyDataChanged('user.isLogged', true);
         this.router.navigate(['/']);
-        this.childModalShow(message, 'Notification');
+       // this.childModalShow(message, 'Notification');
       }
     }
   }

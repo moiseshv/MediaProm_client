@@ -4,12 +4,11 @@ import { LoginService } from '../../app.services/login.service';
 import { NgaModule } from '../../theme/nga.module';
 import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DefaultModal } from './../ui/components/modals/default-modal/default-modal.component';
 
 @Component({
   selector: 'resetPassword',
   templateUrl: './resetpass.html',
-  styleUrls: ['./login.scss'],
+  styleUrls: ['./resetpass.scss'],
   providers: [LoginService]
 })
 export class ResetPassword {
@@ -17,6 +16,8 @@ export class ResetPassword {
   public form:FormGroup;
   public email:AbstractControl;
   public submitted:boolean = false;
+
+  public titlemsg: string = 'Enter email address and send request.'
 
   constructor(fb:FormBuilder,private _loginservice: LoginService, private modalService: NgbModal) {
     this.form = fb.group({
@@ -35,30 +36,33 @@ export class ResetPassword {
   }
 
     private async resetpass(email: string) {
-    var userdata = await this._loginservice.resetPassword(email);
+
+      try {
+        var userdata = await this._loginservice.resetPassword(email);
+      } catch (error) {
+         var message = "Can not connect with server. Please try again later.";
+          this.titlemsg = message;
+      }
+    
 
     if (userdata == undefined) {
-      var message = "Can not login in this moment. Please try again later.";
-      this.childModalShow(message, 'Error Notification');
+      var message = "Can not reset password in this moment. Please try again later.";
+           this.titlemsg = message;
     }
     else {
       console.log(userdata);
       var errorcode: string = userdata["code"];
       if (errorcode != undefined) {
         message = userdata["error"];
-        this.childModalShow(message, 'Error Notification');
+        this.titlemsg = message;
       }
       else {
         //Salvar el usuario actual 
-        message = "Reset Process OK!!!";
+        message = "Reset Request Sended";
+         this.titlemsg = message;
         console.log(message);
-        this.childModalShow(message, 'Notification');
       }
     }
   }
-   childModalShow(message : string, title:string) {
-    const activeModal = this.modalService.open(DefaultModal, {size: 'sm'});
-    activeModal.componentInstance.modalHeader = title;
-    activeModal.componentInstance.modalContent = message;
-  }
+   
 }
