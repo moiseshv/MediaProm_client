@@ -41,7 +41,7 @@ export class BaPageTop {
       if (user != undefined) {
         this._user = user;
         this.username = user['name'];
-        this.avatarfilename = user['name'];
+        this.avatarfilename = user['photo'];
         if(!this.avatarfilename){
          // this.avatarfilename = 'sign_in_avatar';
 

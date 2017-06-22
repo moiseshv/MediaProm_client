@@ -2,35 +2,46 @@ import {Injectable} from '@angular/core';
 import {BaThemeConfigProvider, colorHelper} from '../../../theme';
 
 @Injectable()
-export class PieChartService {
+export class ResumeService {
 
   constructor(private _baConfig:BaThemeConfigProvider) {
   }
 
   getData() {
-    let pieColor = this._baConfig.get().colors.custom.dashboardPieChart;
     return [
       {
-        color: pieColor,
+
         description: 'dashboard.devices',
-        stats: '57,820',
-        icon: 'fa fa-user fa-5x',
+        stats: '127',
+        icon: 'fa fa-desktop fa-5x',
       }, {
-        color: pieColor,
+
         description: 'dashboard.plans',
-        stats: '$ 89,745',
+        stats: '4',
         icon: 'fa fa-money fa-5x',
       }, {
-        color: pieColor,
+
         description: 'dashboard.videos',
-        stats: '178,391',
-        icon: 'movie',
+        stats: '178',
+        icon: 'fa fa-file-movie-o fa-5x',
       }, {
-        color: pieColor,
+
         description: 'dashboard.shared_devices',
-        stats: '32,592',
-        icon: 'face',
+        stats: '23',
+        icon: 'fa fa-share-alt fa-5x',
       }
     ];
+    /*
+
+    var stats = {
+                'devices'         : 10,  
+                'videos'          : 23,
+                'shared_devices'  : 34,
+                'plans'           : 3
+              }  
+              
+              */
+
   }
+
 }

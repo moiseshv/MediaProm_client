@@ -55,6 +55,12 @@
         "created_with": "Created with"
     },
     "dashboard": {
+        "devices": "Player Devices",
+        "shared_devices": "Shared Devices",
+        "videos": "Videos",
+        "plans": "Reproduction Plans",
+
+        "users": "Player Devices",
         "acquisition_channels": "Acquisition Channels",
         "users_by_country": "Users by Country",
         "revenue": "Revenue",

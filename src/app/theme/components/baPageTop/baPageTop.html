@@ -14,14 +14,18 @@
             </a>
             <ul class="dropdown-menu top-dropdown-menu profile-dropdown" aria-labelledby="user-profile-dd">
                 <li class="dropdown-item">
-                    <a href (click)="resetPassword()"> <i class="fa fa-key"></i>Password Reset</a>
+                    <a href (click)="resetPassword()"> <i class="fa fa-key"></i>Pass. Reset</a>
                 </li>
                 <li class="dropdown-item">
                     <a href (click)="register()"> <i class="fa fa-registered"></i>Register</a>
                 </li>
-                <li class="dropdown-item">
+                <li class="dropdown-item" *ngIf="isUserLogged">
                     <a href (click)="logOut()" class="signout"> <i class="fa fa-power-off"></i>[{{userActionName}}]</a>
                 </li>
+                <li class="dropdown-item" *ngIf="!isUserLogged">
+                    <a href (click)="logOut()" class="signin"> <i class="fa fa-sign-in"></i>[{{userActionName}}]</a>
+                </li>
+
             </ul>
         </div>
         <ba-msg-center></ba-msg-center>
