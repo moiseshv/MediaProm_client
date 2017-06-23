@@ -108,6 +108,8 @@ public resetPassword() {
         //Salvar el usuario actual  
         message = "Logout Process OK!!!";
         this.isUserLogged = false;
+        // Se guarda el current user id
+        sessionStorage.setItem('user.current.id', undefined);
         this._state.notifyDataChanged('user.isLogged', this.isUserLogged);
         this.username = "";
         this.avatarfilename = 'sign_in_avatar';

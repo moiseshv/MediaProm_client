@@ -131,17 +131,19 @@ export class ResumeService {
 
   private async getDevicesbyUser(userid: string) {
     //where={"owner":{"__type":"Pointer","className":"_User","objectId":"wJ1XDdGTFf"}}
-    userid = "wJ1XDdGTFf";
+   // userid = "wJ1XDdGTFf";
     console.log("Devices request");
+     console.log(userid);
     var requestobj = { "owner": { "__type": "Pointer", "className": "_User", "objectId": "wJ1XDdGTFf" }};
     requestobj.owner.objectId = userid;
-    var deviceserverurl = this.serverUrl + 'classes/Device';
-    var str = '{"owner":{"__type":"Pointer","className":"_User","objectId":"wJ1XDdGTFf"}}';
+    var deviceserverurl = this.serverUrl + 'classes/Device/';
+    var strobj =  JSON.stringify(requestobj);//'{"owner":{"__type":"Pointer","className":"_User","objectId":"wJ1XDdGTFf"}}';
+    deviceserverurl = deviceserverurl + '?where=' + strobj;
+    
     var headers = {
         "Content-Type": "Application/json",
         "X-Parse-Application-Id": "MEDIA_PROM",
-        "Access-Control-Allow-Origin": "*",
-        "where" :  str  //JSON.stringify(requestobj)
+        "Access-Control-Allow-Origin": "*"
       }
     if(userid != undefined){         
         // var whereStr = JSON.stringify(requestobj);
@@ -179,23 +181,17 @@ export class ResumeService {
     console.log("Videos request");
     var requestobj = { "owner": { "__type": "Pointer", "className": "_User", "objectId": "wJ1XDdGTFf" }};
     requestobj.owner.objectId = userid;
-    var deviceserverurl = this.serverUrl + 'classes/MediaItem';
+    var videoserverurl = this.serverUrl + 'classes/MediaItem';
+    var strobj =  JSON.stringify(requestobj);//'{"owner":{"__type":"Pointer","className":"_User","objectId":"wJ1XDdGTFf"}}';
+    videoserverurl = videoserverurl + '?where=' + strobj;
 
     var headers = {
         "Content-Type": "Application/json",
         "X-Parse-Application-Id": "MEDIA_PROM",
       }
-    if(userid != undefined){         
-         var whereStr = JSON.stringify(requestobj);
-         headers["where"] =whereStr;         
-    }
-    var req ={
-      method: "GET",
-      headers
-    }
-
+    
     try {
-       var req_response = await fetch(deviceserverurl, {method: "GET", headers});
+       var req_response = await fetch(videoserverurl, {method: "GET", headers});
     } catch (error) {
       console.log(error)
     }

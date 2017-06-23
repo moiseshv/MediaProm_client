@@ -74,10 +74,14 @@ export class Login {
         //Salvar el usuario actual 
         message = "Login Process OK!!!";
         console.log(message);
-        //this.currentUser = userdata;
+        // Se guarda el current user id
+        sessionStorage.setItem('user.current.id', userdata['objectId']);
+        var user = sessionStorage.getItem('user.current.id');
+
         this._state.notifyDataChanged('user.current', userdata);
         this._state.notifyDataChanged('session.token', userdata['sessionToken']);
         this._state.notifyDataChanged('user.isLogged', true);
+       
         this.router.navigate(['/']);
        // this.childModalShow(message, 'Notification');
       }
