@@ -20,7 +20,7 @@ import { CalendarService } from './calendar/calendar.service';
 import { FeedService } from './feed/feed.service';
 import { LineChartService } from './lineChart/lineChart.service';
 import { PieChartService } from './pieChart/pieChart.service';
-import { ResumeService } from './resume/resume.service';
+//import { ResumeService } from './resume/resume.service';
 import { TodoService } from './todo/todo.service';
 import { TrafficChartService } from './trafficChart/trafficChart.service';
 import { UsersMapService } from './usersMap/usersMap.service';
@@ -50,7 +50,7 @@ import { UsersMapService } from './usersMap/usersMap.service';
     FeedService,
     LineChartService,
     PieChartService,
-    ResumeService,
+   // ResumeService,
     TodoService,
     TrafficChartService,
     UsersMapService

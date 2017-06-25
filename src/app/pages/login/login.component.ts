@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
-import { LoginService } from '../../app.services/login.service';
+import { AuthService } from '../../app.services/auth.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {GlobalState} from '../../../app/global.state';
 import { DefaultModal } from './../ui/components/modals/default-modal/default-modal.component';
@@ -12,7 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   selector: 'login',
   templateUrl: './login.html',
   styleUrls: ['./login.scss'],
-  providers: [LoginService]
+  providers: [AuthService]
 })
 export class Login {
 
@@ -24,7 +24,7 @@ export class Login {
 
   public currentUser: Object;
 
-  constructor(private router: Router, private _state:GlobalState, fb: FormBuilder, private _loginservice: LoginService, private modalService: NgbModal) {
+  constructor(private router: Router, private _state:GlobalState, fb: FormBuilder, private _loginservice: AuthService, private modalService: NgbModal) {
     this.form = fb.group({
       'username': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
       'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
@@ -44,7 +44,6 @@ export class Login {
     this.submitted = true;
     if (this.form.valid) {
       console.log("User: " + values["username"] + " is trying to login");
-
       this.login(values);
 
     }

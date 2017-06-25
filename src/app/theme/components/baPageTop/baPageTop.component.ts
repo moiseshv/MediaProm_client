@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GlobalState } from '../../../global.state';
-import { LoginService } from '../../../app.services/login.service';
+import { AuthService } from '../../../app.services/auth.service';
 
 @Component({
   selector: 'ba-page-top',
   templateUrl: './baPageTop.html',
   styleUrls: ['./baPageTop.scss'],
-  providers: [LoginService]
+  providers: [AuthService]
 })
 export class BaPageTop {
 
@@ -21,7 +21,7 @@ export class BaPageTop {
   private _user: Object;
 
 
-  constructor(private router: Router, private _state: GlobalState, private _loginservice: LoginService) {
+  constructor(private router: Router, private _state: GlobalState, private _loginservice: AuthService) {
 
     this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
       this.isMenuCollapsed = isCollapsed;
@@ -95,9 +95,11 @@ public resetPassword() {
 
     if (userdata == undefined) {
       var message = "Can not logout in this moment. Please try again later.";
+            console.log('userdata1');
       alert(message);
     }
     else {
+      console.log('userdata2');
       console.log(userdata);
       var errorcode: string = userdata["code"];
       if (errorcode != undefined) {
@@ -106,7 +108,7 @@ public resetPassword() {
       }
       else {
         //Salvar el usuario actual  
-        message = "Logout Process OK!!!";
+        message = "Logout Process OK component!!!";
         this.isUserLogged = false;
         // Se guarda el current user id
         sessionStorage.setItem('user.current.id', undefined);

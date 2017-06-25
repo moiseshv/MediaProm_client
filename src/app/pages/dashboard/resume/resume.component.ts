@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
-import { ResumeService } from './resume.service';
+import { AnalyticsService } from '../../../app.services/analytics.service';
 import { GlobalState } from '../../../global.state';
 
 
 @Component({
   selector: 'resume',
   templateUrl: './resume.html',
-  styleUrls: ['./resume.scss']
+  styleUrls: ['./resume.scss'],
+  providers: [AnalyticsService]
 })
 
 export class Resume {
@@ -21,8 +22,7 @@ export class Resume {
    this.data = adata
   }
 
-  //constructor(private _resumeService: ResumeService) {
-  constructor(private _ref: ChangeDetectorRef, private _state: GlobalState, private _resumeService: ResumeService) {
+  constructor(private _ref: ChangeDetectorRef, private _state: GlobalState, private _resumeService: AnalyticsService) {
      this.data = _resumeService.getDummyData();    
      var upf = async (user) => {
       console.log('usuario llego')

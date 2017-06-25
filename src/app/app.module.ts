@@ -16,12 +16,18 @@ import { AppState, InternalStateType } from './app.service';
 import { GlobalState } from './global.state';
 import { NgaModule } from './theme/nga.module';
 import { PagesModule } from './pages/pages.module';
+import { ParseAuthService } from './app.services/parse.auth.service';
+import { ParseDeviceService } from './app.services/parse.device.service';
+import { ParseMediaItemService } from './app.services/parse.mediaitem.service';
 
 
 // Application wide providers
 const APP_PROVIDERS = [
   AppState,
-  GlobalState
+  GlobalState,
+  ParseAuthService,
+  ParseDeviceService,
+  ParseMediaItemService
 ];
 
 export type StoreType = {
