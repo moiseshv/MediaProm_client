@@ -5,6 +5,8 @@ import { NgaModule } from '../../theme/nga.module';
 import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+
+
 @Component({
   selector: 'resetPassword',
   templateUrl: './resetpass.html',
@@ -19,7 +21,7 @@ export class ResetPassword {
 
   public titlemsg: string = 'Enter email address and send request.'
 
-  constructor(fb:FormBuilder,private _loginservice: AuthService, private modalService: NgbModal) {
+  constructor(fb:FormBuilder, private _loginservice: AuthService, private modalService: NgbModal) {
     this.form = fb.group({
       'email': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
     });

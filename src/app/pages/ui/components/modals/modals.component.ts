@@ -2,35 +2,71 @@ import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DefaultModal } from './default-modal/default-modal.component';
 
+import { MediaItemService } from '../../../../app.services/mediaitem.service';
+import { DeviceService } from '../../../../app.services/device.service';
+
 @Component({
   selector: 'modals',
   styleUrls: ['./modals.scss'],
-  templateUrl: './modals.html'
+  templateUrl: './modals.html',
+  providers: [MediaItemService,DeviceService ]
 })
 export class Modals {
 
-  constructor(private modalService: NgbModal) {}
+  constructor(private mediitemservice:MediaItemService , private deviceservice:DeviceService , private modalService: NgbModal) {}
 
-  lgModalShow() {
+  lgModalShow() {    
     const activeModal = this.modalService.open(DefaultModal, {size: 'lg'});
     activeModal.componentInstance.modalHeader = 'Large Modal';
+    
   }
-  smModalShow(): void {
-    const activeModal = this.modalService.open(DefaultModal, {size: 'sm'});
-    activeModal.componentInstance.modalHeader = 'Small Modal';
-  }
-
-  staticModalShow() {
-    const activeModal = this.modalService.open(DefaultModal, {size: 'sm',
-                                                              backdrop: 'static'});
-    activeModal.componentInstance.modalHeader = 'Static modal';
-    activeModal.componentInstance.modalContent = `This is static modal, backdrop click
-                                                    will not close it. Click × or confirmation button to close modal.`;
+  async addDeviceCategory() {
+    var deviceid = 's99179l4LT';
+    var categories = ['XUM9McE2db','qQuJFZEWcz'];
+    var popo = await this.deviceservice.addCategory(deviceid,categories);
+     
   }
 
-  childModalShow() {
-    const activeModal = this.modalService.open(DefaultModal, {size: 'sm'});
-    activeModal.componentInstance.modalHeader = 'Child modal';
-    activeModal.componentInstance.modalContent = `I am a child modal, opened from parent component!`;
+  async remDeviceCategory() {
+    var deviceid = 's99179l4LT';
+    var categories = ['XUM9McE2db','qQuJFZEWcz'];
+    var popo = await this.deviceservice.removeCategory(deviceid,categories);
+     
   }
+
+ 
+
+  
+
+  
+ private async addVideoCat(){
+    var videoid = 'iQmxrzPava';
+    var categories = ['XUM9McE2db','qQuJFZEWcz'];
+    var popo = await this.mediitemservice.addCategory(videoid,categories);
+    console.log(popo);
+  }
+
+  private async removeVideoCat(){
+    
+    var videoid = 'iQmxrzPava';
+    var categories = ['XUM9McE2db','qQuJFZEWcz'];
+    var popo = await this.mediitemservice.removeCategory(videoid,categories);
+    console.log(popo);
+  }
+
+   private async removeDeviceVideo(){    
+    var deviceid = 's99179l4LT';
+       var videos = ['iQmxrzPava','B7esxY8Orr'];
+    var popo = await this.deviceservice.removeMediaItem(deviceid,videos);
+    console.log(popo);
+  }
+
+   private async addDeviceVideo(){    
+    var deviceid = 's99179l4LT';
+    var videos = ['iQmxrzPava','B7esxY8Orr'];
+    var popo = await this.deviceservice.addMediaItem(deviceid,videos);
+    console.log(popo);
+  }
+
+  
 }

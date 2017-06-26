@@ -9,40 +9,117 @@ import { MEDIA_SERVER_URL, API_END, SERVER_APPLICATION_ID } from './../app.confi
 @Injectable()
 export class ParseMediaItemService {
   private serverUrl = MEDIA_SERVER_URL + API_END;
- 
+
   constructor() {
   }
 
 
-   public async getMediasbyUser(userid: string) {
+  public async getMediasbyUser(userid: string) {
     //where={"owner":{"__type":"Pointer","className":"_User","objectId":"wJ1XDdGTFf"}}
-     // userid = "wJ1XDdGTFf";
+    // userid = "wJ1XDdGTFf";
     console.log("Videos request");
-    var requestobj = { "owner": { "__type": "Pointer", "className": "_User", "objectId": "wJ1XDdGTFf" }};
+    var requestobj = { "owner": { "__type": "Pointer", "className": "_User", "objectId": "wJ1XDdGTFf" } };
     requestobj.owner.objectId = userid;
     var videoserverurl = this.serverUrl + 'classes/MediaItem';
-    var strobj =  JSON.stringify(requestobj);//'{"owner":{"__type":"Pointer","className":"_User","objectId":"wJ1XDdGTFf"}}';
+    var strobj = JSON.stringify(requestobj);//'{"owner":{"__type":"Pointer","className":"_User","objectId":"wJ1XDdGTFf"}}';
     videoserverurl = videoserverurl + '?where=' + strobj;
 
     var headers = {
-        "Content-Type": "Application/json",
-        "X-Parse-Application-Id": "MEDIA_PROM",
-      }
-    
+      "Content-Type": "Application/json",
+      "X-Parse-Application-Id": SERVER_APPLICATION_ID,
+    }
+
     try {
-       var req_response = await fetch(videoserverurl, {method: "GET", headers});
+      var req_response = await fetch(videoserverurl, { method: "GET", headers });
     } catch (error) {
       console.log(error)
     }
 
     try {
-       var userdata = await req_response.json();
+      var userdata = await req_response.json();
     } catch (error) {
-        console.log(error)
+      console.log(error)
     }
     //console.log(userdata)
     return userdata;
   }
 
- 
+
+  public async addCategory(videoid: string, categories: string[]) {
+    console.log("Categor Add to Video request");
+
+    //Primero formar un arreglo de categories
+    var categoryArr = [];
+    categories.forEach(element => {
+      var category = { "__type": "Pointer", "className": "Category", "objectId": element };
+      categoryArr.push(category);
+    });
+
+    var videoserverurl = this.serverUrl + 'classes/MediaItem/' + videoid;
+    var requestbody =   JSON.stringify( {"categories":{"__op":"AddRelation","objects":categoryArr}} );
+    console.log(requestbody);
+
+    try {
+      var req_response = await fetch(videoserverurl, {
+        method: "PUT",
+        body: requestbody,
+        headers: {
+          "Content-Type": "application/json",
+          "X-Parse-Application-Id": SERVER_APPLICATION_ID
+        }
+      }
+      );
+    } catch (error) {
+      console.log(error)
+    }
+
+    try {
+      var userdata = await req_response.json();
+    } catch (error) {
+      console.log(error)
+    }
+    //console.log(userdata)
+    return userdata;
+  }
+
+
+ public async removeCategory(videoid: string, categories: string[]) {
+    console.log("Categor Add to Video request");
+
+    //Primero formar un arreglo de categories
+    var categoryArr = [];
+    categories.forEach(element => {
+      var category = { "__type": "Pointer", "className": "Category", "objectId": element };
+      categoryArr.push(category);
+    });
+
+    var videoserverurl = this.serverUrl + 'classes/MediaItem/' + videoid;
+    var requestbody =   JSON.stringify( {"categories":{"__op":"RemoveRelation","objects":categoryArr}} );
+    console.log(requestbody);
+
+    try {
+      var req_response = await fetch(videoserverurl, {
+        method: "PUT",
+        body: requestbody,
+        headers: {
+          "Content-Type": "application/json",
+          "X-Parse-Application-Id": SERVER_APPLICATION_ID
+        }
+      }
+      );
+    } catch (error) {
+      console.log(error)
+    }
+
+    try {
+      var userdata = await req_response.json();
+    } catch (error) {
+      console.log(error)
+    }
+    //console.log(userdata)
+    return userdata;
+  }
+
+
+
 }
