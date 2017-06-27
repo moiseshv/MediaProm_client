@@ -37,6 +37,11 @@ export class Modals {
  
 
   
+   private async getDeviceofCategory(){
+    var categories = ['XUM9McE2db','qQuJFZEWcz'];
+    var popo = await this.deviceservice.getDeviceByCategory(categories, true);
+    console.log(popo);
+  }
 
   
  private async addVideoCat(){
@@ -46,8 +51,7 @@ export class Modals {
     console.log(popo);
   }
 
-  private async removeVideoCat(){
-    
+  private async removeVideoCat(){    
     var videoid = 'iQmxrzPava';
     var categories = ['XUM9McE2db','qQuJFZEWcz'];
     var popo = await this.mediitemservice.removeCategory(videoid,categories);

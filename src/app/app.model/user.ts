@@ -1,7 +1,9 @@
+import { BaseObject } from './baseObject';
+
 /*
 * Representa un usuario
 */
-export class User {
+export class User extends BaseObject {
 
   public name: string;
   public username: string;
@@ -12,72 +14,64 @@ export class User {
   public sessionToken: string;
 
   //parseObject
-  public createdAt: string;
-  public updatedAt: Date;
   public emailVerified: boolean;
-  public objectId: string;
   public _email_verify_token: string;
   public _email_verify_token_expires_at: string;
   public _perishable_token: string;
 
   constructor() {
+    super();
    }
 
   //Construye un objeto User a partir de un Pasrse _User
   fromParseJSON(parseObject: Object) {
+    super.fromParseJSON(parseObject);
+    var atts = parseObject;
+    if ('attributes' in parseObject) {
+      atts = parseObject["attributes"];
+    }
+
     //name
-    if (parseObject.hasOwnProperty('name')) {
-      this.name = parseObject['name'];
+    if ('name' in atts) {
+      this.name = atts['name'];
     }
     //username
-    if (parseObject.hasOwnProperty('username')) {
-      this.username = parseObject['username'];
+    if ('username' in atts) {
+      this.username = atts['username'];
     }
     //email
-    if (parseObject.hasOwnProperty('email')) {
-      this.email = parseObject['email'];
+    if ('email' in atts) {
+      this.email = atts['email'];
     }
     //password
-    if (parseObject.hasOwnProperty('password')) {
-      this.password = parseObject['password'];
+    if ('password' in atts) {
+      this.password = atts['password'];
     }
     //phone
-    if (parseObject.hasOwnProperty('phone')) {
-      this.email = parseObject['phone'];
+    if ('phone' in atts) {
+      this.phone = atts['phone'];
     }
     //photo
-    if (parseObject.hasOwnProperty('photo')) {
-      this.email = parseObject['photo'];
+    if ('photo' in atts) {
+      this.photo = atts['photo'];
     }
     //sessionToken
-    if (parseObject.hasOwnProperty('sessionToken')) {
-      this.email = parseObject['sessionToken'];
+    if ('sessionToken' in atts) {
+      this.sessionToken = atts['sessionToken'];
     }
-    //updatedAt
-    if (parseObject.hasOwnProperty('updatedAt')) {
-      var uaStr = parseObject['updatedAt'];
-      if (uaStr != undefined) {
-        this.updatedAt = new Date();
-      }
-    }
-
+  
     //emailVerified
-    if (parseObject.hasOwnProperty('emailVerified')) {
-      this.emailVerified = parseObject['emailVerified'];
-    }
-
-    //objectId
-    if (parseObject.hasOwnProperty('objectId')) {
-      this.objectId = parseObject['objectId'];
+    if ('emailVerified' in atts) {
+      this.emailVerified = atts['emailVerified'];
     }
 
   }
 
-  toJSON() {
+   toJSON() {
     return Object.assign({}, this, {
       created: this.toString()
     });
-  }
+   }
 
 
 }

@@ -4,65 +4,70 @@
 
 
 import { Injectable } from '@angular/core';
+import { Parse } from 'parse';
 import { MEDIA_SERVER_URL, API_END, SERVER_APPLICATION_ID } from './../app.configs';
 
 @Injectable()
 export class ParseDeviceService {
   private serverUrl = MEDIA_SERVER_URL + API_END;
- 
+
+
   constructor() {
+    Parse.initialize(SERVER_APPLICATION_ID);
+    Parse.serverURL = this.serverUrl;
+
   }
 
 
 
-/*
-* Retorna la lista de videos por usuario
-*/
+  /*
+  * Retorna la lista de videos por usuario
+  */
   public async getDevicesbyUser(userid: string) {
     //where={"owner":{"__type":"Pointer","className":"_User","objectId":"wJ1XDdGTFf"}}
-   // userid = "wJ1XDdGTFf";
+    // userid = "wJ1XDdGTFf";
     console.log("Devices request");
-     console.log(userid);
-    var requestobj = { "owner": { "__type": "Pointer", "className": "_User", "objectId": "wJ1XDdGTFf" }};
+    console.log(userid);
+    var requestobj = { "owner": { "__type": "Pointer", "className": "_User", "objectId": "wJ1XDdGTFf" } };
     requestobj.owner.objectId = userid;
     var deviceserverurl = this.serverUrl + 'classes/Device/';
-    var strobj =  JSON.stringify(requestobj);//'{"owner":{"__type":"Pointer","className":"_User","objectId":"wJ1XDdGTFf"}}';
-    deviceserverurl = deviceserverurl + '?where=' + strobj;
-    
+    var strobj = JSON.stringify(requestobj);//'{"owner":{"__type":"Pointer","className":"_User","objectId":"wJ1XDdGTFf"}}';
+    deviceserverurl = deviceserverurl + '?order=name&where=' + strobj;
+
     var headers = {
-        "Content-Type": "Application/json",
-        "X-Parse-Application-Id": "MEDIA_PROM",
-        "Access-Control-Allow-Origin": "*"
-      }
-    if(userid != undefined){         
-        // var whereStr = JSON.stringify(requestobj);
-        // headers["where"] =whereStr;         
+      "Content-Type": "Application/json",
+      "X-Parse-Application-Id": "MEDIA_PROM",
+      "Access-Control-Allow-Origin": "*"
     }
-    var req ={
+    if (userid != undefined) {
+      // var whereStr = JSON.stringify(requestobj);
+      // headers["where"] =whereStr;         
+    }
+    var req = {
       method: "GET",
       headers
     }
 
-     console.log(req);
+    console.log(req);
     try {
-       var req_response = await fetch(deviceserverurl, {method: "GET", headers});
-       console.log(req_response);
+      var req_response = await fetch(deviceserverurl, { method: "GET", headers });
+      console.log(req_response);
     } catch (error) {
       console.log('Error1')
     }
 
-      console.log(req_response);
+    console.log(req_response);
     try {
-       var userdata = await req_response.json();
+      var userdata = await req_response.json();
     } catch (error) {
-        console.log(error)
+      console.log(error)
     }
     //console.log(userdata)
     return userdata;
   }
 
 
- public async addCategory(deviceid: string, categories: string[]) {
+  public async addCategory(deviceid: string, categories: string[]) {
     console.log("Category Add to Device request Parse");
 
     //Primero formar un arreglo de categories
@@ -73,7 +78,7 @@ export class ParseDeviceService {
     });
 
     var videoserverurl = this.serverUrl + 'classes/Device/' + deviceid;
-    var requestbody =   JSON.stringify( {"categories":{"__op":"AddRelation","objects":categoryArr}} );
+    var requestbody = JSON.stringify({ "categories": { "__op": "AddRelation", "objects": categoryArr } });
     console.log(requestbody);
 
     try {
@@ -110,7 +115,7 @@ export class ParseDeviceService {
     });
 
     var videoserverurl = this.serverUrl + 'classes/Device/' + deviceid;
-    var requestbody =   JSON.stringify( {"categories":{"__op":"RemoveRelation","objects":categoryArr}} );
+    var requestbody = JSON.stringify({ "categories": { "__op": "RemoveRelation", "objects": categoryArr } });
     console.log(requestbody);
 
     try {
@@ -137,7 +142,7 @@ export class ParseDeviceService {
   }
 
 
- public async addMediaItem(deviceid: string, mediaItems: string[]) {
+  public async addMediaItem(deviceid: string, mediaItems: string[]) {
     console.log("Video Add to Device request Parse");
 
     //Primero formar un arreglo de categories
@@ -148,7 +153,7 @@ export class ParseDeviceService {
     });
 
     var videoserverurl = this.serverUrl + 'classes/Device/' + deviceid;
-    var requestbody =   JSON.stringify( {"items":{"__op":"AddRelation","objects":Arr}} );
+    var requestbody = JSON.stringify({ "items": { "__op": "AddRelation", "objects": Arr } });
     console.log(requestbody);
 
     try {
@@ -185,7 +190,7 @@ export class ParseDeviceService {
     });
 
     var videoserverurl = this.serverUrl + 'classes/Device/' + deviceid;
-    var requestbody =   JSON.stringify( {"items":{"__op":"RemoveRelation","objects":Arr}} );
+    var requestbody = JSON.stringify({ "items": { "__op": "RemoveRelation", "objects": Arr } });
     console.log(requestbody);
 
     try {
@@ -211,5 +216,52 @@ export class ParseDeviceService {
     return userdata;
   }
 
- 
+  /*
+  * Devuelve la lista de Devices que tienen o no (withcategory) la categorías
+  * si withcategory, responde la lista de los devices que al menos tengan una categoria
+  * se no withcategory, devuelve la lista de los devices que no tienen ninguna de las categorias solicitadas
+  */
+  public async getDeviceByCategory(categories: string[], withcategory: boolean) {
+    console.log("Get device by categories request Parse");
+    var query = new Parse.Query("Device");
+    //Primero formar un arreglo de categories
+    var Arr = [];
+    var catclass = Parse.Object.extend("Category");
+    categories.forEach(element => {
+      var category = catclass.createWithoutData(element);
+      Arr.push(category);
+    });
+
+    try {
+      //Ordenado por nombre      
+      query.ascending("name");
+      //Que incluya los datos del owner
+      query.include("owner");
+      //Que incluya los datos del plan
+      query.include("plan");
+      //Que incluya los datos del status      
+      query.include("status");
+      //Que incluya los datos del type      
+      query.include("type");
+
+      if (withcategory) {
+        query.containedIn("categories", Arr);
+      }
+      else {
+        query.notContainedIn("categories", Arr);
+      }
+
+      console.log(query);
+
+      var req_response = await query.find();
+      return req_response;
+    } catch (error) {
+      console.log(error)
+      return error;
+    }
+
+
+  }
+
+
 }

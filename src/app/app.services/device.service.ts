@@ -1,20 +1,21 @@
 import { Injectable } from '@angular/core';
 import { MEDIA_SERVER_URL, API_END } from './../app.configs';
 import { ParseDeviceService } from './parse.device.service';
+import { Device } from './../app.model/device';
 
 @Injectable()
 export class DeviceService {
-  
+
   constructor(private _parseDeviceService: ParseDeviceService) {
 
   }
 
- 
+
   public async addCategory(deviceid: string, categories: string[]) {
-    console.log("Add Category to Device Service...");     
-     //Videos
+    console.log("Add Category to Device Service...");
+    //Videos
     try {
-      var response = await this._parseDeviceService.addCategory(deviceid,categories);
+      var response = await this._parseDeviceService.addCategory(deviceid, categories);
       if (response == undefined) {
         var message = "Can not add categories to video in this moment.";
         console.log(message);
@@ -27,7 +28,7 @@ export class DeviceService {
           console.log(message);
         }
         else {
-        return response;
+          return response;
         }
       }
     } catch (error) {
@@ -37,11 +38,11 @@ export class DeviceService {
   }
 
 
- public async removeCategory(deviceid: string, categories: string[]) {
-    console.log("Add Category to Device Service...");     
-     //Videos
+  public async removeCategory(deviceid: string, categories: string[]) {
+    console.log("Add Category to Device Service...");
+    //Videos
     try {
-      var response = await this._parseDeviceService.removeCategory(deviceid,categories);
+      var response = await this._parseDeviceService.removeCategory(deviceid, categories);
       if (response == undefined) {
         var message = "Can not add categories to video in this moment.";
         console.log(message);
@@ -54,7 +55,7 @@ export class DeviceService {
           console.log(message);
         }
         else {
-        return response;
+          return response;
         }
       }
     } catch (error) {
@@ -64,11 +65,11 @@ export class DeviceService {
   }
 
 
- public async addMediaItem(deviceid: string, mediaItems: string[]) {
-    console.log("Add Video to Device Service...");     
-     //Videos
+  public async addMediaItem(deviceid: string, mediaItems: string[]) {
+    console.log("Add Video to Device Service...");
+    //Videos
     try {
-      var response = await this._parseDeviceService.addMediaItem(deviceid,mediaItems);
+      var response = await this._parseDeviceService.addMediaItem(deviceid, mediaItems);
       if (response == undefined) {
         var message = "Can not add categories to video in this moment.";
         console.log(message);
@@ -81,7 +82,7 @@ export class DeviceService {
           console.log(message);
         }
         else {
-        return response;
+          return response;
         }
       }
     } catch (error) {
@@ -91,10 +92,10 @@ export class DeviceService {
   }
 
   public async removeMediaItem(deviceid: string, mediaItems: string[]) {
-    console.log("Add Video to Device Service...");     
-     //Videos
+    console.log("Add Video to Device Service...");
+    //Videos
     try {
-      var response = await this._parseDeviceService.removeMediaItem(deviceid,mediaItems);
+      var response = await this._parseDeviceService.removeMediaItem(deviceid, mediaItems);
       if (response == undefined) {
         var message = "Can not add categories to video in this moment.";
         console.log(message);
@@ -107,15 +108,57 @@ export class DeviceService {
           console.log(message);
         }
         else {
-        return response;
+          return response;
         }
       }
     } catch (error) {
+      console.log(message);
+      var error = "";
 
     }
 
   }
 
- 
- 
+
+  public async getDeviceByCategory(categories: string[], withcategory: boolean) {
+    console.log("get Device of Category Service...");
+    //Videos
+    try {
+      var response = await this._parseDeviceService.getDeviceByCategory(categories, withcategory);
+      if (response == undefined) {
+        var message = "Can not get devices in this moment.";
+        console.log(message);
+      }
+      else {
+        console.log(' de parse');
+        console.log(response);
+        var deviceArr = [];
+        if (response != undefined) {
+          for (var i = 0; i < response.length; i++) {
+            //console.log(response[i]);
+            var device = new Device();
+            device.fromParseJSON(response[i]);
+            deviceArr.push(device);
+          }
+         
+
+        }
+        console.log('arr');
+        console.log(deviceArr);
+        return deviceArr;
+
+
+      }
+    } catch (error) {
+      console.log(error);
+      var errormessage = "Error trying to connect with server";
+      return { "code": "900", "error": errormessage };
+    }
+
+
+
+  }
+
+
+
 }
