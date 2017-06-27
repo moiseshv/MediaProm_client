@@ -5,12 +5,15 @@
 
 import { Injectable } from '@angular/core';
 import { MEDIA_SERVER_URL, API_END, SERVER_APPLICATION_ID } from './../app.configs';
+import { Parse } from 'parse';
 
 @Injectable()
 export class ParseMediaItemService {
   private serverUrl = MEDIA_SERVER_URL + API_END;
 
   constructor() {
+    Parse.initialize(SERVER_APPLICATION_ID);
+    Parse.serverURL = this.serverUrl;
   }
 
 
@@ -120,6 +123,47 @@ export class ParseMediaItemService {
     return userdata;
   }
 
+
+/*
+  * Devuelve la lista de Videos que tienen o no (withcategory) la categorías
+  * si withcategory, responde la lista de los videos que al menos tengan una categoria
+  * se no withcategory, devuelve la lista de los videos que no tienen ninguna de las categorias solicitadas
+  */
+  public async getMediaItemByCategory(categories: string[], withcategory: boolean) {
+    console.log("Get videos by categories request Parse");
+    var query = new Parse.Query("MediaItem");
+    //Primero formar un arreglo de categories
+    var Arr = [];
+    var catclass = Parse.Object.extend("Category");
+    categories.forEach(element => {
+      var category = catclass.createWithoutData(element);
+      Arr.push(category);
+    });
+
+    try {
+      //Ordenado por nombre      
+      query.ascending("name");
+      //Que incluya los datos del owner
+      query.include("owner");
+
+      if (withcategory) {
+        query.containedIn("categories", Arr);
+      }
+      else {
+        query.notContainedIn("categories", Arr);
+      }
+
+      console.log(query);
+
+      var req_response = await query.find();
+      return req_response;
+    } catch (error) {
+      console.log(error)
+      return error;
+    }
+
+
+  }
 
 
 }
