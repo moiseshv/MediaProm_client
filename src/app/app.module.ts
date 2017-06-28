@@ -19,6 +19,8 @@ import { PagesModule } from './pages/pages.module';
 import { ParseAuthService } from './app.services/parse.auth.service';
 import { ParseDeviceService } from './app.services/parse.device.service';
 import { ParseMediaItemService } from './app.services/parse.mediaitem.service';
+import { MediaItemService } from './app.services/mediaitem.service';
+import { DeviceService } from './app.services/device.service';
 
 
 // Application wide providers
@@ -27,6 +29,8 @@ const APP_PROVIDERS = [
   GlobalState,
   ParseAuthService,
   ParseDeviceService,
+  MediaItemService,
+  DeviceService,
   ParseMediaItemService
 ];
 

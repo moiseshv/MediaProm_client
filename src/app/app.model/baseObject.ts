@@ -29,15 +29,15 @@ export class BaseObject {
         this.createdAt = new Date(uaStr);
       }
     }
-
-    
-
-
    
     //objectId
   if ('id' in parseObject) {
       this.objectId = parseObject['id'];
-    }
+   }
+       //objectId
+  if ('objectId' in parseObject) {
+      this.objectId = parseObject['objectId'];
+   }
 
   }
 

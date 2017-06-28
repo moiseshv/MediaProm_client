@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { MEDIA_SERVER_URL, API_END } from './../app.configs';
-import { ParseDeviceService } from './parse.device.service';
-import { ParseMediaItemService } from './parse.mediaitem.service';
+import { DeviceService } from './device.service';
+import { MediaItemService } from './mediaitem.service';
+import { Device } from './../app.model/device';
+import { MediaItem } from './../app.model/mediaitem';
+import { Plan } from './../app.model/plan';
 
 @Injectable()
 export class AnalyticsService {
  private serverUrl = MEDIA_SERVER_URL + API_END;
   //contiene los devices asociados al usuario actual
-  private devices: Array<Object>;
+  private devices: Array<Device>;
   //contiene los videos asociados al usuario actual
-  private videos: Object;
+  private videos: Array<MediaItem>;
   //contiene los planes asociados al usuario actual
-  private plans: Object;
+  private plans: Array<Plan>;
   // user
   private userId: string;
   // cantidad de devices
@@ -22,7 +25,7 @@ export class AnalyticsService {
   private planscount:number;
 
   
-  constructor(private _parseDeviceService: ParseDeviceService , private _parseMediaItemService: ParseMediaItemService) {
+  constructor(private _deviceService:DeviceService , private _MediaItemService: MediaItemService) {
   }
 
   public getDevices(){
@@ -40,7 +43,11 @@ export class AnalyticsService {
 
 
   public async getResumeData(userid: string) {
-    console.log("Resume Service...");   
+
+       
+    console.log("Resume Service...");  
+     console.log(userid);  
+
     var devicedata = {
       description: 'dashboard.devices',
       stats: -1,
@@ -67,7 +74,7 @@ export class AnalyticsService {
 
 
      try {
-      var udevices = await this._parseDeviceService.getDevicesbyUser(userid);
+      var udevices = await this._deviceService.getDevicesByUser(userid);
       if (udevices == undefined) {
         var message = "Can not get devices in this moment.";
         console.log(message);
@@ -79,8 +86,8 @@ export class AnalyticsService {
           message = udevices["error"];
           console.log(message);       }
         else {
-          this.devices = udevices;                   
-          devicedata['stats'] = ((udevices != undefined) && (udevices.results != undefined))? Object.keys(udevices.results).length : -1;
+          this.devices = udevices as Device[];;                   
+          devicedata['stats'] = (udevices != undefined) ? Object.keys(udevices).length : -1;
           
         }
       }
@@ -92,7 +99,7 @@ export class AnalyticsService {
 
     //Videos
     try {
-      var uvideos = await this._parseMediaItemService.getMediasbyUser(userid);
+      var uvideos = await this._MediaItemService.getMediaItemsByUser(userid);
       if (uvideos == undefined) {
         var message = "Can not get videos in this moment.";
         console.log(message);
@@ -105,8 +112,8 @@ export class AnalyticsService {
           console.log(message);
         }
         else {
-          this.videos = uvideos;
-          videodata['stats'] = ((uvideos != undefined) && (uvideos.results != undefined))? Object.keys(uvideos.results).length : -1;
+          this.videos = uvideos as MediaItem[ ];
+          videodata['stats'] = ((uvideos != undefined) ) ? Object.keys(uvideos).length : -1;
         }
       }
     } catch (error) {

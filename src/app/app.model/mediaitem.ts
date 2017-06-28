@@ -10,9 +10,12 @@ export class MediaItem extends BaseObject {
   public mrl: string;
   public videoType: string;
   public planned : boolean;
-  public categories: object[]; //relation
+  public categories: Object[]; //relation
   public priority: number;
+  public duration: number;
   public owner: User;//User
+  // Por si se usar con Parse
+  public parsefile: Object;//{_name,_url }
 
   constructor() {
     super();
@@ -61,11 +64,19 @@ export class MediaItem extends BaseObject {
       this.owner = user;
     }
 
-    
-
-    //totalCapacity
+    //priority
     if ('priority' in atts) {
       this.priority = atts['priority'];
+    }
+
+     //duration
+    if ('duration' in atts) {
+      this.duration = atts['duration'];
+    }
+
+     //duration
+    if ('parsefile' in atts) {
+      this.parsefile = atts['parsefile'];
     }
    
   }

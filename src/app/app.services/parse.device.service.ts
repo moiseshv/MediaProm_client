@@ -23,7 +23,7 @@ export class ParseDeviceService {
   /*
   * Retorna la lista de videos por usuario
   */
-  public async getDevicesbyUser(userid: string) {
+  public async getDevicesbyUserREST(userid: string) {
     //where={"owner":{"__type":"Pointer","className":"_User","objectId":"wJ1XDdGTFf"}}
     // userid = "wJ1XDdGTFf";
     console.log("Devices request");
@@ -251,8 +251,6 @@ export class ParseDeviceService {
         query.notContainedIn("categories", Arr);
       }
 
-      console.log(query);
-
       var req_response = await query.find();
       return req_response;
     } catch (error) {
@@ -260,8 +258,34 @@ export class ParseDeviceService {
       return error;
     }
 
-
   }
 
+
+ /*
+  * Devuelve la lista de Device que tiene un usuario
+  */
+  public async getDevicesByUser(userid: string) {
+    console.log("Get videos by user request Parse");
+    var query = new Parse.Query("Device");
+    //Primero formar un el user
+    console.log(userid);
+    if(userid == undefined){
+      return {"code":"901","error":"No user defined"};
+    }
+    let user = new Parse.User();    
+    user.id = userid;
+    try {
+      //Ordenado por nombre      
+      query.ascending("name");
+      //Que incluya los datos del owner
+      query.include("owner");
+      query.equalTo("owner", user);
+      var req_response = await query.find();
+      return req_response;
+    } catch (error) {
+      console.log(error)
+      return error;
+    }
+  }
 
 }

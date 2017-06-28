@@ -87,7 +87,7 @@ export class ParseMediaItemService {
 
 
  public async removeCategory(videoid: string, categories: string[]) {
-    console.log("Categor Add to Video request");
+    console.log("Remove Category to Video request");
 
     //Primero formar un arreglo de categories
     var categoryArr = [];
@@ -129,7 +129,34 @@ export class ParseMediaItemService {
   * si withcategory, responde la lista de los videos que al menos tengan una categoria
   * se no withcategory, devuelve la lista de los videos que no tienen ninguna de las categorias solicitadas
   */
-  public async getMediaItemByCategory(categories: string[], withcategory: boolean) {
+  public async getMediaItemsByUser(userid: string) {
+    console.log("Get videos by user request Parse");
+    var query = new Parse.Query("MediaItem");
+    //Primero formar un el user
+    console.log(userid);
+    if(userid == undefined){
+      return {"code":"901","error":"No user defined"};
+    }
+    let user = new Parse.User();    
+    user.id = userid;
+    try {
+      //Ordenado por nombre      
+      query.ascending("name");
+      //Que incluya los datos del owner
+      query.include("owner");
+      query.equalTo("owner", user);
+      var req_response = await query.find();
+      return req_response;
+    } catch (error) {
+      console.log(error)
+      return error;
+    }
+  }
+
+  /*
+  * Devuelve la lista de Videos que tiene un usuario
+  */
+  public async getMediaItemsByCategory(categories: string[], withcategory: boolean) {
     console.log("Get videos by categories request Parse");
     var query = new Parse.Query("MediaItem");
     //Primero formar un arreglo de categories
@@ -152,17 +179,12 @@ export class ParseMediaItemService {
       else {
         query.notContainedIn("categories", Arr);
       }
-
-      console.log(query);
-
       var req_response = await query.find();
       return req_response;
     } catch (error) {
       console.log(error)
       return error;
     }
-
-
   }
 
 

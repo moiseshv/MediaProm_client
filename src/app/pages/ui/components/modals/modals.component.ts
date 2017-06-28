@@ -34,14 +34,21 @@ export class Modals {
      
   }
 
- 
-
   
    private async getDeviceofCategory(){
     var categories = ['XUM9McE2db','qQuJFZEWcz'];
     var popo = await this.deviceservice.getDeviceByCategory(categories, true);
     console.log(popo);
   }
+
+  private async getVideosofCategory(){
+    var categories = ['XUM9McE2db','qQuJFZEWcz'];
+    var popo = await this.mediitemservice.getMediaItemsByCategory(categories, true);
+    console.log(popo);
+  }
+
+
+  
 
   
  private async addVideoCat(){

@@ -140,14 +140,40 @@ export class DeviceService {
             device.fromParseJSON(response[i]);
             deviceArr.push(device);
           }
-         
+        }
+        return deviceArr;
+      }
+    } catch (error) {
+      console.log(error);
+      var errormessage = "Error trying to connect with server";
+      return { "code": "900", "error": errormessage };
+    }
+  }
+
+
+ public async getDevicesByUser(userid: string) {
+    console.log("get Devices By User Service...");
+    //Videos
+    try {
+      var response = await this._parseDeviceService.getDevicesByUser(userid);
+       console.log('req_response ');
+        console.log('response ');
+      if (response == undefined) {
+        var message = "Can not get devices in this moment.";
+        console.log(message);
+      }
+      else {
+        var Arr = [];
+        if (response != undefined) {
+          for (var i = 0; i < response.length; i++) {
+            console.log(response[i]);
+            var device = new Device();
+            device.fromParseJSON(response[i]);
+            Arr.push(device);
+          }        
 
         }
-        console.log('arr');
-        console.log(deviceArr);
-        return deviceArr;
-
-
+        return Arr;
       }
     } catch (error) {
       console.log(error);
@@ -155,10 +181,7 @@ export class DeviceService {
       return { "code": "900", "error": errormessage };
     }
 
-
-
   }
-
 
 
 }

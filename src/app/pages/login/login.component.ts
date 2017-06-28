@@ -73,6 +73,7 @@ export class Login {
         //Salvar el usuario actual 
         message = "Login Process OK!!!";
         console.log(message);
+       console.log( userdata);
         // Se guarda el current user id
         sessionStorage.setItem('user.current.id', userdata['objectId']);
         var user = sessionStorage.getItem('user.current.id');
