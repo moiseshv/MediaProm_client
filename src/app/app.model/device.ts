@@ -9,17 +9,18 @@ import { User } from './user';
 */
 export class Device extends BaseObject {
 
-  public name: string;
-  public address: string;
-  public model: string;
-  public categories: object[]; //{id, name, description}
-  public lastPingDate: Date;
-  public owner: User;
-  public plan: Plan; //{id, name, description}
-  public status: DeviceStatus;//{id, name, description}
-  public totalCapacity: number;
-  public currentCapacity: number;
-  public type: DeviceType; //{id, name, description}
+   name: string;
+   address: string;
+   location: Object;
+   model: string;
+   categories: object[]; //{id, name, description}
+   lastPingDate: Date;
+   owner: User;
+   plan: Plan; //{id, name, description}
+   status: DeviceStatus;//{id, name, description}
+   totalCapacity: number;
+   currentCapacity: number;
+   type: DeviceType; //{id, name, description}
 
   constructor() {
     super();
@@ -41,7 +42,7 @@ export class Device extends BaseObject {
     }
 
     //lastPingDate
-    if ('lastPingDate'in atts) {
+    if ('lastPingDate' in atts) {
       var uaStr = atts['lastPingDate'];
       if (uaStr != undefined) {
         this.lastPingDate = new Date(uaStr);
@@ -49,8 +50,27 @@ export class Device extends BaseObject {
     }
 
     //address
-    if ('address'in atts) {
+    if ('address' in atts) {
       this.address = atts['address'];
+    }
+
+    //location
+    if ('location' in atts) {
+      if ('latitude' in atts['location']) {
+        var lat = atts['location']['latitude'];
+      }
+      else{
+         lat = atts['location']['_latitude'];
+      }
+
+      if ('longitude' in atts['location']) {
+        var lon = atts['location']['longitude'];
+      }
+      else{
+         lat = atts['location']['_longitude'];
+      }
+
+      this.location = { 'latitude': lat, 'logitude': lon };
     }
 
     //model

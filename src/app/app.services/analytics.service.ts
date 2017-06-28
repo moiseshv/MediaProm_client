@@ -5,10 +5,11 @@ import { MediaItemService } from './mediaitem.service';
 import { Device } from './../app.model/device';
 import { MediaItem } from './../app.model/mediaitem';
 import { Plan } from './../app.model/plan';
+import { ServiceResponse } from './../app.model/service.response';
 
 @Injectable()
 export class AnalyticsService {
- private serverUrl = MEDIA_SERVER_URL + API_END;
+  private serverUrl = MEDIA_SERVER_URL + API_END;
   //contiene los devices asociados al usuario actual
   private devices: Array<Device>;
   //contiene los videos asociados al usuario actual
@@ -18,35 +19,35 @@ export class AnalyticsService {
   // user
   private userId: string;
   // cantidad de devices
-  private devicescount:number;
-   // cantidad de videos
-  private videoscount:number;
+  private devicescount: number;
   // cantidad de videos
-  private planscount:number;
+  private videoscount: number;
+  // cantidad de videos
+  private planscount: number;
 
-  
-  constructor(private _deviceService:DeviceService , private _MediaItemService: MediaItemService) {
+
+  constructor(private _deviceService: DeviceService, private _MediaItemService: MediaItemService) {
   }
 
-  public getDevices(){
+  public getDevices() {
     return this.devices;
   }
-  public getVideos(){
+  public getVideos() {
     return this.getVideos
   }
-  public getPlans(){
+  public getPlans() {
     return this.getPlans;
   }
-  public getUserId(){
+  public getUserId() {
     return this.userId;
   }
 
 
   public async getResumeData(userid: string) {
 
-       
-    console.log("Resume Service...");  
-     console.log(userid);  
+
+    console.log("Resume Service...");
+    console.log(userid);
 
     var devicedata = {
       description: 'dashboard.devices',
@@ -73,48 +74,48 @@ export class AnalyticsService {
     }
 
 
-     try {
-      var udevices = await this._deviceService.getDevicesByUser(userid);
-      if (udevices == undefined) {
+    try {
+      var rdevices = await this._deviceService.getDevicesByUser(userid);
+      if (rdevices == undefined) {
         var message = "Can not get devices in this moment.";
         console.log(message);
       }
       else {
-        console.log(udevices);
-        var errorcode: string = udevices["code"];
+        console.log(rdevices);
+        var errorcode: string = rdevices["code"];
         if (errorcode != undefined) {
-          message = udevices["error"];
-          console.log(message);       }
+          message = rdevices["error"];
+          console.log(message);
+        }
         else {
-          this.devices = udevices as Device[];;                   
-          devicedata['stats'] = (udevices != undefined) ? Object.keys(udevices).length : -1;
-          
+           const succ = ServiceResponse.isResposeSuccess(rdevices);
+          if (succ) {
+            this.devices = rdevices['value'] as Device[];
+            devicedata['stats'] = (rdevices !== undefined) ? Object.keys(this.devices).length : -1;
+          }      
+         
+
         }
       }
-    } catch (error) {      
-      console.log(error);    
+    } catch (error) {
+      console.log(error);
 
     }
 
 
     //Videos
     try {
-      var uvideos = await this._MediaItemService.getMediaItemsByUser(userid);
-      if (uvideos == undefined) {
+      var rvideos = await this._MediaItemService.getMediaItemsByUser(userid);
+      if (rvideos === undefined) {
         var message = "Can not get videos in this moment.";
         console.log(message);
       }
-      else {
-        console.log(uvideos);
-        var errorcode: string = uvideos["code"];
-        if (errorcode != undefined) {
-          message = udevices["error"];
-          console.log(message);
-        }
-        else {
-          this.videos = uvideos as MediaItem[ ];
-          videodata['stats'] = ((uvideos != undefined) ) ? Object.keys(uvideos).length : -1;
-        }
+      else {         
+          const succ = ServiceResponse.isResposeSuccess(rvideos);
+          if (succ) {
+            this.videos = rvideos['value'] as MediaItem[];
+            videodata['stats'] = ((this.videos !== undefined)) ? Object.keys(this.videos).length : -1;
+          }       
       }
     } catch (error) {
 
@@ -122,13 +123,13 @@ export class AnalyticsService {
 
     // Visualizar datos estaditicos
     var returnObj = [devicedata, videodata, plandata, shareddata];
-    return returnObj;
-
+    const successResponse = ServiceResponse.createSuccessResponse(returnObj);
+    return successResponse;
   }
 
 
   public getDummyData() {
- 
+
     var devicedata = {
       description: 'dashboard.devices',
       stats: 'NA',
@@ -152,15 +153,15 @@ export class AnalyticsService {
       stats: 'NA',
       icon: 'fa fa-share-alt fa-5x',
     }
-     
-      // Visualizar datos estaditicos
-    return [devicedata,videodata,plandata,shareddata];  
-    
+
+    // Visualizar datos estaditicos
+    return [devicedata, videodata, plandata, shareddata];
+
 
   }
 
 
 
- 
- 
+
+
 }

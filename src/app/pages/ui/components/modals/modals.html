@@ -2,17 +2,28 @@
     <div class="row">
         <div class="col-md-12">
             <ba-card title="Modals" class="modal-buttons">
-                 <button class="btn btn-success" (click)="addCategory()">Add Category</button>
-                <button class="btn btn-warning" (click)="remCategory()">Rem Category</button>
-                <button class="btn btn-primary" (click)="getCategories()">get Category</button>
-                <button class="btn btn-success" (click)="addDeviceCategory()">Add Dev Cate</button>
+                <button class="btn btn-success" (click)="addCategory()">Add Category</button>
+                <button class="btn btn-success" (click)="remCategory()">Rem Category</button>
+                <button class="btn btn-success" (click)="getCategories()">get Category</button>
+
+                <button class="btn btn-warning" (click)="addDevice()">Add device to user</button>
+                <button class="btn btn-warning" (click)="removeDevice()">Remove Device</button>
+                <button class="btn btn-warning" (click)="getDeviceByUser()">get Devices by user</button>
+                <button class="btn btn-warning" (click)="addDeviceCategory()">Add Dev Cate</button>
                 <button class="btn btn-warning" (click)="remDeviceCategory()">remo Dev Cat</button>
-                <button class="btn btn-primary" (click)="removeVideoCat()">remove video category</button>
-                <button class="btn btn-danger" (click)="addVideoCat()">add video category</button>
-                <button class="btn btn-primary" (click)="removeDeviceVideo()">remove device video </button>
-                <button class="btn btn-danger" (click)="addDeviceVideo()">add device video </button>
-                <button class="btn btn-danger" (click)="getDeviceofCategory()">get devices of cate </button>
+
+                <button class="btn btn-warning" (click)="getDeviceofCategory()">get devices of cate </button>
+
+                <button class="btn btn-warning" (click)="removeDeviceVideo()">remove device video </button>
+                <button class="btn btn-warning" (click)="addDeviceVideo()">add device video </button>
+
+                <button class="btn btn-danger" (click)="addVideo()">Add video to user</button>
+                <button class="btn btn-danger" (click)="removeVideo()">Remove video</button>
+                <button class="btn btn-danger" (click)="getVideoByUser()">get video by user</button>
                 <button class="btn btn-danger" (click)="getVideosofCategory()">get videos of cate </button>
+                <button class="btn btn-danger" (click)="removeVideoCat()">remove video category</button>
+                <button class="btn btn-danger" (click)="addVideoCat()">add video category</button>
+
             </ba-card>
         </div>
     </div>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { MEDIA_SERVER_URL, API_END } from './../app.configs';
 import { ParseCategoryService } from './parse.category.service';
 import { Category } from './../app.model/category';
+import { ServiceResponse } from './../app.model/service.response';
 
 @Injectable()
 export class CategoryService {
@@ -14,77 +15,105 @@ export class CategoryService {
   /*
   * Devuelve la lista de Categorias 
   */
-  public async getCategories(filter : string) {
-    console.log("get Categories  Service...");
+  async getCategories(filter: string) {
+    console.log("get Categories Service...");
     //Videos
     try {
       var response = await this._parseCategoryService.getCategories(filter);
-      if (response == undefined) {
-        var message = "Can not get devices in this moment.";
-        console.log(message);
+      if (response === undefined) {
+        const errResponse = ServiceResponse.createErrorResponseByCode('901');
+        console.log(errResponse);
+        return errResponse;
       }
       else {
+        const existError = response['code'] !== undefined;
+        if (existError) {
+          const errResponse = ServiceResponse.createErrorResponse(response['code'], response['message']);
+          console.log(errResponse);
+          return errResponse;
+        }
+
         var Arr = [];
-        if (response != undefined) {
+        if (response !== undefined) {
+
           for (var i = 0; i < response.length; i++) {
-            console.log(response[i]);
-            var categor = new Category();
-            categor.fromParseJSON(response[i]);
-            Arr.push(categor);
-          }        
+            const category = new Category();
+            category.fromParseJSON(response[i]);
+            Arr.push(category);
+          }
 
         }
-        return Arr;
+        const successResponse = ServiceResponse.createSuccessResponse(Arr);
+        return successResponse;
       }
     } catch (error) {
-      console.log(error);
-      var errormessage = "Error trying to connect with server";
-      return { "code": "900", "error": errormessage };
+       const errResponse = ServiceResponse.createErrorResponseByCode('900');
+       console.log(errResponse);
+       return errResponse;
     }
   }
 
 
-/*
-  * Elimina una Categoria
-  */
+  /*
+    * Elimina una Categoria
+    */
   public async removeCategory(id: string) {
     console.log("remove Category  Service...");
     //Videos
     try {
       var response = await this._parseCategoryService.removeCategory(id);
       if (response == undefined) {
-        var message = "Can not remove category  this moment.";
-        console.log(message);
+        const errResponse = ServiceResponse.createErrorResponseByCode('901');
+        console.log(errResponse);
+        return errResponse;
       }
-      else {       
-        return response;
+      else {
+        const existError = response['code'] !== undefined;
+        if (existError) {
+          const errResponse = ServiceResponse.createErrorResponse(response['code'], response['message']);
+          console.log(errResponse);
+          return errResponse;
+        }
+         console.log(response);
+        const successResponse = ServiceResponse.createSuccessResponse(undefined);
+        return successResponse;
       }
     } catch (error) {
-      console.log(error);
-      var errormessage = "Error trying to connect with server";
-      return { "code": "900", "error": errormessage };
+      const errResponse = ServiceResponse.createErrorResponseByCode('900');
+       console.log(errResponse);
+       return errResponse;
     }
   }
 
- /*
-  * Adiciona una Categoria
-  */
-  public async addCategory(name: string, description : string) {
+  /*
+   * Adiciona una Categoria OK
+   */
+  public async addCategory(name: string, description: string) {
     console.log("Add Category  Service...");
     //Videos
     try {
-      var response = await this._parseCategoryService.addCategory(name,description);
-      if (response == undefined) {
-        var message = "Can not remove category  this moment.";
-        console.log(message);
+      var response = await this._parseCategoryService.addCategory(name, description);
+      if (response === undefined) {
+        const errResponse = ServiceResponse.createErrorResponseByCode('901');
+        console.log(errResponse);
+        return errResponse;
       }
-      else {       
-        return response;
+      else {
+        const existError = response['code'] !== undefined;
+        if (existError) {
+          const errResponse = ServiceResponse.createErrorResponse(response['code'], response['message']);
+          console.log(errResponse);
+          return errResponse;
+        }
+        var category = new Category();
+        category.fromParseJSON(response);
+        const successResponse = ServiceResponse.createSuccessResponse(category);
+        return successResponse;
       }
     } catch (error) {
-      console.log(error);
-      var errormessage = "Error trying to connect with server";
-      return { "code": "900", "error": errormessage };
+      const errResponse = ServiceResponse.createErrorResponseByCode('900');
+      console.log(errResponse);
+      return errResponse;
     }
   }
 
