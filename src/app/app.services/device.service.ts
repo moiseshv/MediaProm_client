@@ -48,7 +48,6 @@ export class DeviceService {
         console.log(message);
       }
       else {
-        console.log(response);
         var errorcode: string = response["code"];
         if (errorcode != undefined) {
           message = response["error"];
@@ -130,8 +129,6 @@ export class DeviceService {
         console.log(message);
       }
       else {
-        console.log(' de parse');
-        console.log(response);
         var deviceArr = [];
         if (response != undefined) {
           for (var i = 0; i < response.length; i++) {
@@ -156,8 +153,6 @@ export class DeviceService {
     //Videos
     try {
       var response = await this._parseDeviceService.getDevicesByUser(userid);
-       console.log('req_response ');
-        console.log('response ');
       if (response == undefined) {
         var message = "Can not get devices in this moment.";
         console.log(message);
