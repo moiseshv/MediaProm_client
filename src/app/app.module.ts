@@ -21,7 +21,7 @@ import { ParseDeviceService } from './app.services/parse.device.service';
 import { ParseMediaItemService } from './app.services/parse.mediaitem.service';
 import { MediaItemService } from './app.services/mediaitem.service';
 import { DeviceService } from './app.services/device.service';
-import { ParseCategoryService } from './app.services/category.service';
+import { ParseCategoryService } from './app.services/parse.category.service';
 
 
 // Application wide providers

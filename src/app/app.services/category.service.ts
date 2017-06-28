@@ -69,7 +69,7 @@ export class CategoryService {
  /*
   * Adiciona una Categoria
   */
-  public async addCAtegory(name: string, description : string) {
+  public async addCategory(name: string, description : string) {
     console.log("Add Category  Service...");
     //Videos
     try {

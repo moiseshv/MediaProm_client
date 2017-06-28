@@ -4,16 +4,17 @@ import { DefaultModal } from './default-modal/default-modal.component';
 
 import { MediaItemService } from '../../../../app.services/mediaitem.service';
 import { DeviceService } from '../../../../app.services/device.service';
+import { CategoryService } from '../../../../app.services/category.service';
 
 @Component({
   selector: 'modals',
   styleUrls: ['./modals.scss'],
   templateUrl: './modals.html',
-  providers: [MediaItemService,DeviceService ]
+  providers: [MediaItemService,DeviceService ,CategoryService]
 })
 export class Modals {
 
-  constructor(private mediitemservice:MediaItemService , private deviceservice:DeviceService , private modalService: NgbModal) {}
+  constructor(private categservice:CategoryService , private mediitemservice:MediaItemService , private deviceservice:DeviceService , private modalService: NgbModal) {}
 
   lgModalShow() {    
     const activeModal = this.modalService.open(DefaultModal, {size: 'lg'});
@@ -79,5 +80,22 @@ export class Modals {
     console.log(popo);
   }
 
+  private async addCategory(){    
+    var name = 'catew';
+    var desc = 'aaaaa';
+    var popo = await this.categservice.addCategory(name,desc);
+    console.log(popo);
+  }
+    private async remCategory(){    
+    var id = 'EV1ddjXtkx';
+
+    var popo = await this.categservice.removeCategory(id);
+    console.log(popo);
+  }
+    private async getCategories(){    
+   
+    var popo = await this.categservice.getCategories(undefined);
+    console.log(popo);
+  }
   
 }

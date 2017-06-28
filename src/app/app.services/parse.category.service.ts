@@ -8,7 +8,7 @@ import { Parse } from 'parse';
 import { MEDIA_SERVER_URL, API_END, SERVER_APPLICATION_ID } from './../app.configs';
 
 @Injectable()
-export class ParseDeviceService {
+export class ParseCategoryService {
   private serverUrl = MEDIA_SERVER_URL + API_END;
 
 
@@ -48,7 +48,7 @@ export class ParseDeviceService {
  /*
   * Adiciona una Categoria
   */
-  public async addCAtegory(name: string, description : string) {
+  public async addCategory(name: string, description : string) {
     console.log("Add Category request Parse");
     var CategoryClass = Parse.Object.extend("Category");
     var category = new CategoryClass();
@@ -66,7 +66,7 @@ export class ParseDeviceService {
 
 
 /*
-  * Adiciona una Categoria
+  * Elimina una Categoria
   */
   public async removeCategory(id: string) {
     console.log("Add Category request Parse");
